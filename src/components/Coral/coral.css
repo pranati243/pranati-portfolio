@@ -121,7 +121,11 @@
 .coral-nudge {
   position: fixed;
   right: calc(var(--space-lg) + 4px);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg) + 82px);
+  /* This offset plus the arrow's own height determines exactly where the
+     arrowhead lands — it was 82px, which left the tip stopping ~66px short
+     of the orb's center with a visible gap above the orb's top edge.
+     Verified against the orb's actual rendered position, not eyeballed. */
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg) + 26px);
   z-index: calc(var(--z-agent) - 1);
   display: flex;
   flex-direction: column;

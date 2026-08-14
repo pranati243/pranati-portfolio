@@ -58,22 +58,40 @@ export default function SwimmingTurtle({
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      {/* shell */}
+      {/* shell — a faint teal emissive rim, matching the fish/jellyfish/coral
+          treatment elsewhere in the scene, keeps the turtle from reading as a
+          flat dark silhouette against the lit water. */}
       <mesh scale={[1, 0.42, 1.25]}>
         <sphereGeometry args={[1, 18, 14]} />
-        <meshStandardMaterial color="#2c5c3d" roughness={0.75} metalness={0.15} />
+        <meshStandardMaterial
+          color="#2c5c3d"
+          emissive="#1a5f7a"
+          emissiveIntensity={0.18}
+          roughness={0.75}
+          metalness={0.15}
+        />
       </mesh>
 
       {/* under-shell */}
       <mesh position={[0, -0.16, 0]} scale={[0.92, 0.2, 1.12]}>
         <sphereGeometry args={[1, 14, 10]} />
-        <meshStandardMaterial color="#4a7c59" roughness={0.85} />
+        <meshStandardMaterial
+          color="#4a7c59"
+          emissive="#1a5f7a"
+          emissiveIntensity={0.15}
+          roughness={0.85}
+        />
       </mesh>
 
       {/* head */}
       <mesh position={[0, 0.06, 1.24]} scale={[0.34, 0.3, 0.42]}>
         <sphereGeometry args={[1, 14, 12]} />
-        <meshStandardMaterial color="#4a7c59" roughness={0.7} />
+        <meshStandardMaterial
+          color="#4a7c59"
+          emissive="#1a5f7a"
+          emissiveIntensity={0.15}
+          roughness={0.7}
+        />
       </mesh>
 
       {flippers.map((flipper, i) => (

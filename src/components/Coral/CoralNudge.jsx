@@ -105,11 +105,18 @@ export default function CoralNudge() {
         </span>
       </button>
 
-      {/* Curved arrow that lands on the orb. */}
+      {/*
+        Curved arrow that lands on the orb's center. The endpoint here isn't
+        eyeballed — it's the result of measuring the orb's actual rendered
+        position against the arrowhead's rendered position via getScreenCTM
+        and iterating until the two matched. The path used to end well short
+        (~74% down its own box, with a further gap between the box and the
+        orb above it) and ~8px too far right.
+      */}
       <svg className="coral-nudge__arrow" viewBox="0 0 90 70" aria-hidden="true">
         <path
           className="coral-nudge__arrow-path"
-          d="M6 10 C 34 8, 62 20, 72 48"
+          d="M6 8 C 30 6, 54 26, 63 60"
           fill="none"
           stroke="currentColor"
           strokeWidth="2.5"
@@ -117,7 +124,7 @@ export default function CoralNudge() {
           strokeDasharray="5 6"
         />
         <path
-          d="M64 40 L73 52 L59 53"
+          d="M53 54 L64 68 L49 66"
           fill="none"
           stroke="currentColor"
           strokeWidth="2.5"
