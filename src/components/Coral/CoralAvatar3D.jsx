@@ -1,16 +1,14 @@
-import { lazy, Suspense, Component, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, Component, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import CoralAvatar from './CoralAvatar.jsx';
-import { isWebGLSupported, getPixelRatio } from '../../utils/deviceDetection.js';
+import { isWebGLSupported } from '../../utils/deviceDetection.js';
 import { useOcean } from '../../context/OceanContext.jsx';
 
-// Its own chunk, loaded only when someone actually opens the chat.
-const Canvas = lazy(() =>
-  import('@react-three/fiber').then((module) => ({ default: module.Canvas }))
-);
-const CoralCharacter = lazy(() => import('./CoralCharacter.jsx'));
+// One lazy boundary, wrapping the canvas AND its contents together, so three.js
+// stays out of the initial bundle without splitting across R3F's reconciler.
+const CoralStage3D = lazy(() => import('./CoralStage3D.jsx'));
 
-/** If the character throws, drop to the flat SVG mascot instead of the panel. */
+/** If the scene throws while rendering, drop to the flat SVG mascot. */
 class AvatarErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +17,10 @@ class AvatarErrorBoundary extends Component {
 
   static getDerivedStateFromError() {
     return { failed: true };
+  }
+
+  componentDidCatch(error) {
+    console.warn('[coral] 3D avatar failed, using flat mascot:', error?.message);
   }
 
   render() {
@@ -37,12 +39,13 @@ AvatarErrorBoundary.propTypes = {
  *
  * Only mounts while the panel is open so we aren't holding a second WebGL
  * context for the whole session, and falls back to the 2D mascot on calm mode,
- * reduced motion or missing WebGL.
+ * reduced motion, missing WebGL, or a lost context.
  */
 export default function CoralAvatar3D({ mood = 'idle', active = false }) {
   const { calm, reducedMotion } = useOcean();
   const gaze = useRef({ x: 0, y: 0 });
   const [webgl, setWebgl] = useState(null);
+  const [contextLost, setContextLost] = useState(false);
 
   useEffect(() => {
     if (webgl === null) setWebgl(isWebGLSupported());
@@ -64,6 +67,16 @@ export default function CoralAvatar3D({ mood = 'idle', active = false }) {
     return () => window.removeEventListener('pointermove', onMove);
   }, [active]);
 
+  // A context lost while closed may well be recoverable next time it opens.
+  useEffect(() => {
+    if (!active) setContextLost(false);
+  }, [active]);
+
+  const handleContextLost = useCallback(() => {
+    console.warn('[coral] WebGL context lost, using flat mascot');
+    setContextLost(true);
+  }, []);
+
   const flat = useMemo(
     () => (
       <div className="coral-stage__flat">
@@ -73,7 +86,7 @@ export default function CoralAvatar3D({ mood = 'idle', active = false }) {
     [mood]
   );
 
-  const use3D = active && webgl && !calm && !reducedMotion;
+  const use3D = active && webgl && !calm && !reducedMotion && !contextLost;
 
   return (
     <div className={`coral-stage${mood === 'thinking' ? ' is-thinking' : ''}`}>
@@ -82,19 +95,7 @@ export default function CoralAvatar3D({ mood = 'idle', active = false }) {
       {use3D ? (
         <AvatarErrorBoundary fallback={flat}>
           <Suspense fallback={flat}>
-            <Canvas
-              className="coral-stage__canvas"
-              dpr={[1, getPixelRatio(2)]}
-              camera={{ fov: 34, position: [0, 0, 6.4], near: 0.1, far: 40 }}
-              gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
-              style={{ pointerEvents: 'none' }}
-            >
-              <ambientLight intensity={1.15} color="#cfeeff" />
-              <directionalLight position={[3, 4, 6]} intensity={2.4} color="#ffffff" />
-              <pointLight position={[-3.5, -1.5, 3]} intensity={26} color="#38bdf8" />
-              <pointLight position={[2.5, 2.5, -2]} intensity={14} color="#ff8fb3" />
-              <CoralCharacter mood={mood} gaze={gaze} />
-            </Canvas>
+            <CoralStage3D mood={mood} gaze={gaze} onContextLost={handleContextLost} />
           </Suspense>
         </AvatarErrorBoundary>
       ) : (

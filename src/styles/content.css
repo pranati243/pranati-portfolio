@@ -42,7 +42,7 @@
 }
 
 .skills__category {
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-base);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -101,7 +101,7 @@
 .about__subhead {
   margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -123,7 +123,7 @@
 }
 
 .about__card-title {
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-base);
   letter-spacing: 0.04em;
   color: var(--text-primary);
@@ -206,7 +206,7 @@
 .resume__group-title {
   margin-top: var(--space-xl);
   margin-bottom: var(--space-md);
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -303,7 +303,7 @@
   padding: 2px 9px;
   border-radius: var(--radius-full);
   vertical-align: middle;
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.1em;

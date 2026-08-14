@@ -30,7 +30,7 @@
 
 .modal__title {
   flex: 1;
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
   color: var(--text-primary);
   line-height: 1.35;

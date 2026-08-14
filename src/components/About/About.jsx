@@ -9,7 +9,7 @@ export default function About() {
   return (
     <Section
       id="about"
-      eyebrow="The diver"
+      eyebrow="03 — Who I am"
       title="About me"
       lead="The short version — Coral can fill in the rest."
     >

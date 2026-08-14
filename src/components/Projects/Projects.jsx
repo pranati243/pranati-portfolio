@@ -13,7 +13,7 @@ export default function Projects() {
   return (
     <Section
       id="projects"
-      eyebrow="The reef"
+      eyebrow="01 — Work"
       title="Things I've built"
       lead="Each of these started as a problem I kept running into. Open one to read why it exists."
       wide

@@ -16,7 +16,7 @@ export default function Resume() {
   return (
     <Section
       id="resume"
-      eyebrow="The log"
+      eyebrow="04 — Background"
       title="Experience & education"
       lead={resume.summary}
     >

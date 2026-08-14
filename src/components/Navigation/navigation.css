@@ -40,7 +40,7 @@
   padding: 6px 10px;
   border-radius: var(--radius-full);
   color: var(--text-primary);
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-weight: 600;
   font-size: var(--text-sm);
   letter-spacing: 0.04em;
@@ -257,7 +257,7 @@
 }
 
 .mobile-menu__index {
-  font-family: var(--font-ocean);
+  font-family: var(--font-heading);
   font-size: var(--text-xs);
   color: var(--ocean-accent-cyan);
   opacity: 0.75;

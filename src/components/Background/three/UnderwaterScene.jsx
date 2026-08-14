@@ -38,14 +38,19 @@ const JELLYFISH = [
   { position: [6.5, 1.8, -7.5], speed: 0.6, scale: 0.8 },
 ];
 
+/**
+ * Pushed well back (z -11 to -19) so the reef sits deep in the fog as scenery
+ * rather than sprouting up through the hero's buttons and stat cards, which is
+ * where it landed at the original z -6 to -12.
+ */
 const CORALS = [
-  { position: [-5, -9.4, -6], scale: 1.3 },
-  { position: [4.5, -9.4, -7], scale: 1.1 },
-  { position: [0, -9.4, -9], scale: 1.5 },
-  { position: [-7.5, -9.4, -9.5], scale: 1.2 },
-  { position: [7, -9.4, -8.5], scale: 1.4 },
-  { position: [-2.5, -9.4, -11], scale: 1 },
-  { position: [3, -9.4, -12], scale: 1.25 },
+  { position: [-5.5, -9.4, -11], scale: 1.15 },
+  { position: [4.5, -9.4, -12], scale: 1 },
+  { position: [0, -9.4, -14], scale: 1.35 },
+  { position: [-8.5, -9.4, -13.5], scale: 1.1 },
+  { position: [7.5, -9.4, -13], scale: 1.25 },
+  { position: [-2.5, -9.4, -16], scale: 0.95 },
+  { position: [3, -9.4, -18], scale: 1.15 },
 ];
 
 const KELP = [

@@ -56,8 +56,8 @@ export default function CoralReef({ position = [0, 0, 0], scale = 1, animate = t
             <meshStandardMaterial
               color={branch.color}
               emissive={branch.color}
-              emissiveIntensity={0.28}
-              roughness={0.65}
+              emissiveIntensity={0.12}
+              roughness={0.75}
             />
           </mesh>
           <mesh position={[0.14, branch.height * 0.72, 0]} rotation={[0, 0, -0.7]}>
@@ -65,8 +65,8 @@ export default function CoralReef({ position = [0, 0, 0], scale = 1, animate = t
             <meshStandardMaterial
               color={branch.color}
               emissive={branch.color}
-              emissiveIntensity={0.28}
-              roughness={0.65}
+              emissiveIntensity={0.12}
+              roughness={0.75}
             />
           </mesh>
         </group>

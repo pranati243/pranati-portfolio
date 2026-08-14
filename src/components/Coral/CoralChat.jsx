@@ -95,10 +95,17 @@ export default function CoralChat() {
     consumeQueuedQuestion();
   }, [queuedQuestion, send, consumeQueuedQuestion]);
 
-  // Keep the newest message in view as it types.
+  // Keep the newest message in view as it types — but not for the opening
+  // greeting on its own, where scrolling to the bottom of a panel shorter than
+  // the message just hides the first line of it.
   useEffect(() => {
     const log = logRef.current;
-    if (log) log.scrollTop = log.scrollHeight;
+    if (!log) return;
+    if (messages.length <= 1 && !isLoading) {
+      log.scrollTop = 0;
+      return;
+    }
+    log.scrollTop = log.scrollHeight;
   }, [messages, isLoading]);
 
   useEffect(() => {
@@ -140,7 +147,7 @@ export default function CoralChat() {
         aria-modal="false"
         aria-label="Chat with Coral"
         aria-hidden={!isOpen}
-        inert={!isOpen ? '' : undefined}
+        inert={!isOpen}
       >
         <header className="coral-panel__header">
           <div className="coral-panel__identity">

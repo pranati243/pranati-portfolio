@@ -69,7 +69,7 @@ export default function Skills() {
   return (
     <Section
       id="skills"
-      eyebrow="The current"
+      eyebrow="02 — Toolkit"
       title="What I work with"
       lead="Grouped by where they sit in a stack, not by how confident the logo makes me look."
     >

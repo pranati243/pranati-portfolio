@@ -88,7 +88,7 @@ export default function Contact() {
   return (
     <Section
       id="contact"
-      eyebrow="Surface"
+      eyebrow="05 — Contact"
       title="Get in touch"
       lead="Open to internships, collaborations, and any project where I get to build something people actually use."
     >

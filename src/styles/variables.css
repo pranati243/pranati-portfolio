@@ -84,6 +84,11 @@
   /* ---- Typography ------------------------------------------------------- */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-heading: 'Manrope', var(--font-primary);
+
+  /* Orbitron is a sci-fi display face — deliberately scoped to Coral's own UI
+     (orb label, chat panel name, nudge) so she reads as a distinct character.
+     It is NOT used for Pranati's name, role, or any section heading: there it
+     undercut the site's credibility. Use --font-heading for those. */
   --font-ocean: 'Orbitron', 'Manrope', sans-serif;
 
   --text-xs: 0.75rem;

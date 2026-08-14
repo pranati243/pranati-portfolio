@@ -50,7 +50,13 @@ export const PARTICLE_CONFIG = {
 
 export const FISH_COLORS = ['#38BDF8', '#60A5FA', '#14B8A6', '#0EA5E9'];
 
-export const CORAL_COLORS = ['#FF6B9D', '#FFA07A', '#FFB6C1'];
+/**
+ * Muted, desaturated coral. The original bright pink/salmon read as cartoonish
+ * against the deep navy palette and fought the hero content for attention —
+ * these sit in the same tonal family as the water instead of on top of it.
+ * Coral the character keeps the brighter pinks; the scenery does not.
+ */
+export const CORAL_COLORS = ['#8C5A6E', '#9E6E62', '#6E5A7D'];
 
 /**
  * Per-system frame budgets. Each system tracks its own last-update timestamp
