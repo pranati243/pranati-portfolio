@@ -37,15 +37,24 @@
   animation: pulse 2.4s ease-in-out infinite;
 }
 
+/* The one serif on the site. An editorial display face here plays against the
+   sans everywhere else, which reads as designed rather than templated — and
+   carries more warmth than the geometric sans it replaced. */
 .hero__greeting {
-  font-size: clamp(2.4rem, 8vw, 4.6rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 8.2vw, 4.9rem);
+  font-weight: 600;
+  /* Serifs need more room than the tight sans tracking this inherited. */
+  letter-spacing: -0.015em;
+  line-height: 1.02;
 }
 
 .hero__hi {
   color: var(--text-secondary);
   font-weight: 500;
+  font-style: italic;
+  /* The italic leans into the name; the word space alone reads as too tight. */
+  margin-right: 0.09em;
 }
 
 .hero__name {

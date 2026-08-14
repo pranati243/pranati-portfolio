@@ -85,6 +85,11 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-heading: 'Manrope', var(--font-primary);
 
+  /* Editorial serif, used only for the hero greeting. Kept at 600+ weight:
+     on a dark background thin strokes optically thin out, so a fragile
+     high-contrast serif would look weak over the moving water. */
+  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+
   /* Orbitron is a sci-fi display face — deliberately scoped to Coral's own UI
      (orb label, chat panel name, nudge) so she reads as a distinct character.
      It is NOT used for Pranati's name, role, or any section heading: there it
