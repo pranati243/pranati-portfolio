@@ -222,7 +222,11 @@
   animation: fadeIn 200ms var(--ease-out);
 }
 
-.mobile-menu__panel {
+/* Two classes: also carries `.glass`, which sets `position: relative` — that
+   rule can win on equal specificity depending on bundle order and collapse
+   this back into normal document flow (see the note on `.glass` in
+   global.css). Compounding the selector guarantees this one wins instead. */
+.mobile-menu__panel.glass {
   position: absolute;
   top: calc(var(--nav-height) + 18px);
   right: var(--space-md);

@@ -468,11 +468,25 @@ h3 {
   }
 }
 
-/* Touch devices: keep every tap target at least 44px. */
+/* Touch devices: keep every tap target at least 44px.
+   Custom interactive elements added after this rule was written (Coral's
+   chat, the calm-mode toggle, project "ask" buttons) weren't covered by it —
+   listed explicitly here rather than relying on everything routing through
+   .btn/.pill. */
 @media (hover: none) and (pointer: coarse) {
   .btn,
   .pill,
-  a[data-tap] {
+  a[data-tap],
+  .nav__calm,
+  .project-card__ask,
+  .coral-panel__close,
+  .coral-suggestion {
     min-height: 44px;
+  }
+
+  /* These two can also shrink narrower than 44px (icon-only on mobile). */
+  .nav__calm,
+  .coral-panel__close {
+    min-width: 44px;
   }
 }
