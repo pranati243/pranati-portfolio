@@ -1,0 +1,141 @@
+/* =========================================================================
+   Background stack. Everything here is fixed, pointer-events:none and sits
+   below --z-content. Nothing in this file may ever capture a click.
+   ========================================================================= */
+
+.ocean-layer,
+.ocean-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ocean-layer {
+  z-index: -1;
+}
+
+.ocean-bg {
+  z-index: 0;
+}
+
+.ocean-bg__gradient {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-depth);
+  background-size: 100% 220%;
+  background-position: 0% 0%;
+  animation: gradientShift 26s ease-in-out infinite;
+}
+
+.ocean-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(120, 220, 255, 0.16), transparent 60%),
+    radial-gradient(100% 70% at 50% 110%, rgba(2, 10, 22, 0.75), transparent 55%);
+}
+
+/* ---- Surface waves ------------------------------------------------------- */
+
+.ocean-bg__surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 190px;
+}
+
+.ocean-bg__wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.ocean-bg__wave--back {
+  animation: waveSlide 24s linear infinite;
+  opacity: 0.9;
+}
+
+.ocean-bg__wave--front {
+  height: 78%;
+  animation: waveSlide 15s linear infinite reverse;
+}
+
+/* ---- Rising bubbles ------------------------------------------------------ */
+
+.ocean-bg__bubbles {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.ocean-bg__bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 30%,
+    rgba(255, 255, 255, 0.85),
+    rgba(224, 247, 255, 0.35) 45%,
+    rgba(56, 189, 248, 0.12) 70%,
+    transparent 72%
+  );
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.55), 0 0 12px rgba(56, 189, 248, 0.35);
+  animation-name: bubbleRise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ---- WebGL / 2D canvas layer -------------------------------------------- */
+
+.ocean-layer__scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out);
+}
+
+.ocean-layer__scene.is-ready {
+  opacity: 1;
+}
+
+.ocean-canvas,
+.ocean-canvas__2d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The scene reads best slightly desaturated behind the glass panels. */
+.ocean-canvas canvas {
+  display: block;
+}
+
+/* Calm mode leans harder on the gradient, so give it more contrast. */
+:root[data-calm='true'] .ocean-bg__vignette {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(120, 220, 255, 0.22), transparent 62%),
+    radial-gradient(100% 70% at 50% 110%, rgba(2, 10, 22, 0.8), transparent 58%);
+}
+
+@media (max-width: 640px) {
+  .ocean-bg__surface {
+    height: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ocean-bg__gradient,
+  .ocean-bg__wave,
+  .ocean-bg__bubble {
+    animation: none;
+  }
+
+  .ocean-bg__bubble {
+    opacity: 0.35;
+  }
+}

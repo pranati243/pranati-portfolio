@@ -1,0 +1,590 @@
+/* =========================================================================
+   Coral — floating orb + chat panel
+   ========================================================================= */
+
+.coral-orb {
+  position: fixed;
+  right: var(--space-lg);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg));
+  z-index: var(--z-agent);
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  color: #eaf9ff;
+  transition: transform var(--transition-base), opacity var(--transition-slow);
+}
+
+.coral-orb.is-dimmed {
+  opacity: 0.45;
+}
+
+.coral-orb:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.coral-orb__glow-outer,
+.coral-orb__glow-mid,
+.coral-orb__sphere,
+.coral-orb__core,
+.coral-orb__shimmer {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.coral-orb__glow-outer {
+  inset: -20px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.32) 0%, transparent 68%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.coral-orb__glow-mid {
+  inset: -11px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite 0.6s;
+}
+
+.coral-orb__sphere {
+  inset: 0;
+  background: radial-gradient(circle at 32% 28%, #bdf0ff 0%, #38bdf8 38%, #1d4ed8 78%, #0a2540 100%);
+  box-shadow:
+    0 0 22px rgba(56, 189, 248, 0.55),
+    0 0 44px rgba(56, 189, 248, 0.3),
+    0 10px 26px rgba(2, 12, 24, 0.5),
+    inset 0 -6px 14px rgba(2, 20, 40, 0.55),
+    inset 0 5px 10px rgba(255, 255, 255, 0.35);
+  animation: float 5s ease-in-out infinite;
+}
+
+.coral-orb__core {
+  inset: 34%;
+  background: radial-gradient(circle, #ffffff 0%, rgba(186, 240, 255, 0.55) 55%, transparent 75%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.coral-orb__shimmer {
+  top: 16%;
+  left: 20%;
+  width: 26%;
+  height: 18%;
+  background: rgba(255, 255, 255, 0.75);
+  filter: blur(4px);
+}
+
+.coral-orb__label {
+  position: relative;
+  font-family: var(--font-ocean);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(2, 12, 24, 0.8);
+}
+
+.coral-orb__icon {
+  position: relative;
+}
+
+/* Rotating ring while a reply is in flight. */
+.coral-orb.is-thinking::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--ocean-accent-cyan);
+  border-right-color: rgba(94, 234, 212, 0.6);
+  animation: rotate 1s linear infinite;
+}
+
+.coral-orb.is-open .coral-orb__sphere {
+  background: radial-gradient(circle at 32% 28%, #6ec8f5 0%, #2563eb 45%, #0a2540 100%);
+  animation: none;
+}
+
+.coral-orb__badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ocean-coral);
+  border: 2px solid #0a2540;
+}
+
+/* ---- Nudge toward the orb --------------------------------------------------- */
+
+.coral-nudge {
+  position: fixed;
+  right: calc(var(--space-lg) + 4px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg) + 82px);
+  z-index: calc(var(--z-agent) - 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.96);
+  transform-origin: bottom right;
+  transition: opacity var(--transition-base), transform var(--transition-slow),
+    visibility var(--transition-base);
+}
+
+.coral-nudge.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.coral-nudge__bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(280px, calc(100vw - 2 * var(--space-lg)));
+  padding: 10px 10px 10px 12px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg), 0 0 26px rgba(56, 189, 248, 0.28);
+  animation: float 3.4s ease-in-out infinite;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.coral-nudge__bubble:hover {
+  box-shadow: var(--shadow-lg), 0 0 38px rgba(56, 189, 248, 0.5);
+}
+
+.coral-nudge__sparkle {
+  font-size: 1.25rem;
+  line-height: 1;
+  animation: sway 3s ease-in-out infinite;
+}
+
+.coral-nudge__copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.coral-nudge__copy strong {
+  font-family: var(--font-ocean);
+  font-size: var(--text-sm);
+  letter-spacing: 0.03em;
+}
+
+.coral-nudge__copy span {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.coral-nudge__close {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.coral-nudge__close:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.2);
+}
+
+.coral-nudge__arrow {
+  width: 76px;
+  height: 58px;
+  margin-right: 4px;
+  color: var(--ocean-accent-cyan);
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+}
+
+/* Dashes travel down the curve toward the orb. */
+.coral-nudge__arrow-path {
+  animation: arrowFlow 1.1s linear infinite;
+}
+
+@keyframes arrowFlow {
+  to {
+    stroke-dashoffset: -11;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coral-nudge__bubble,
+  .coral-nudge__sparkle,
+  .coral-nudge__arrow-path {
+    animation: none;
+  }
+}
+
+/* ---- Panel ---------------------------------------------------------------- */
+
+/* Two classes: `.glass` also sets `position: relative`, and stylesheet order
+   between global.css and this file is not guaranteed by the bundler. Without
+   the extra specificity the panel drops into normal flow at the foot of the
+   page instead of docking to the corner. */
+.coral-panel.glass {
+  position: fixed;
+  z-index: var(--z-panel);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--glass-bg-strong);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity var(--transition-base), transform var(--transition-slow),
+    visibility var(--transition-base);
+
+  /* Mobile default: full-height sheet. */
+  inset: 0;
+  border-radius: 0;
+  border-width: 0;
+}
+
+.coral-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* Docked to the same corner as the orb, sitting directly above it. */
+@media (min-width: 640px) {
+  .coral-panel.glass {
+    inset: auto;
+    right: var(--space-lg);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg) + 78px);
+    left: auto;
+    top: auto;
+    width: min(408px, calc(100vw - 2 * var(--space-lg)));
+    height: min(660px, calc(100dvh - 190px));
+    border-radius: var(--radius-xl);
+    border-width: 1px;
+  }
+}
+
+.coral-panel__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  padding-top: max(var(--space-md), env(safe-area-inset-top, 0px));
+  border-bottom: 1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.1), transparent);
+}
+
+.coral-panel__identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.coral-panel__name {
+  font-family: var(--font-ocean);
+  font-size: var(--text-base);
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+.coral-panel__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.coral-panel__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ocean-teal-light);
+  box-shadow: 0 0 8px var(--ocean-teal-light);
+}
+
+.coral-panel__dot.is-busy {
+  background: var(--ocean-coral-warm);
+  box-shadow: 0 0 8px var(--ocean-coral-warm);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.coral-panel__close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-fast);
+}
+
+.coral-panel__close:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.22);
+  transform: rotate(90deg);
+}
+
+/* ---- 3D character stage ---------------------------------------------------- */
+
+.coral-stage {
+  position: relative;
+  height: 168px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--glass-border);
+  background:
+    radial-gradient(60% 90% at 50% 88%, rgba(56, 189, 248, 0.18), transparent 70%),
+    linear-gradient(180deg, rgba(4, 20, 38, 0.55), rgba(10, 37, 64, 0.15));
+}
+
+/* Caustic wash drifting across the stage floor, so she reads as underwater
+   rather than floating in a void. */
+.coral-stage__light {
+  position: absolute;
+  inset: -30% -20% 0;
+  background: radial-gradient(
+    45% 60% at 50% 0%,
+    rgba(160, 230, 255, 0.22),
+    transparent 65%
+  );
+  animation: sway 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.coral-stage.is-thinking .coral-stage__light {
+  animation-duration: 3.6s;
+}
+
+.coral-stage__canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+.coral-stage__flat {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 400px), (max-height: 700px) {
+  .coral-stage {
+    height: 130px;
+  }
+}
+
+/* On a genuinely short viewport the character would squeeze the conversation
+   out of the panel — reading the answers matters more than watching her. */
+@media (max-height: 540px) {
+  .coral-stage {
+    display: none;
+  }
+}
+
+/* ---- Message log ----------------------------------------------------------- */
+
+.coral-panel__log {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.coral-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 88%;
+  animation: slideUpSheet 300ms var(--ease-out);
+}
+
+.coral-msg--user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.coral-msg__bubble {
+  position: relative;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.coral-msg--coral .coral-msg__bubble {
+  border-bottom-left-radius: 5px;
+  background: rgba(20, 52, 86, 0.85);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+.coral-msg--user .coral-msg__bubble {
+  border-bottom-right-radius: 5px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(56, 189, 248, 0.85));
+  color: #04121f;
+  font-weight: 500;
+}
+
+.coral-msg__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--ocean-accent-cyan);
+  animation: caretBlink 1s step-end infinite;
+}
+
+.coral-msg__bubble--dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-block: 14px;
+}
+
+.coral-msg__bubble--dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ocean-accent-cyan);
+  animation: dotBounce 1.3s ease-in-out infinite;
+}
+
+.coral-msg__bubble--dots span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.coral-msg__bubble--dots span:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+/* ---- Suggestions ----------------------------------------------------------- */
+
+.coral-panel__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 var(--space-md) var(--space-sm);
+}
+
+.coral-suggestion {
+  padding: 7px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-fast);
+}
+
+.coral-suggestion:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-1px);
+}
+
+/* ---- Composer -------------------------------------------------------------- */
+
+.coral-panel__form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  padding-bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--glass-border);
+}
+
+.coral-panel__input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding-inline: var(--space-md);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  background: rgba(6, 26, 48, 0.7);
+  border: 1px solid var(--glass-border);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.coral-panel__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.coral-panel__input:focus {
+  border-color: var(--glass-border-active);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.16);
+}
+
+.coral-panel__send {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: #04121f;
+  background: var(--gradient-accent);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.32);
+  transition: all var(--transition-fast);
+}
+
+.coral-panel__send:hover:not(:disabled) {
+  background: var(--gradient-accent-hover);
+  transform: scale(1.06);
+}
+
+.coral-panel__send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---- Avatar ---------------------------------------------------------------- */
+
+.coral-avatar {
+  display: inline-grid;
+  place-items: center;
+  filter: drop-shadow(0 0 6px rgba(255, 140, 170, 0.45));
+  animation: float 5s ease-in-out infinite;
+}
+
+.coral-avatar.is-thinking {
+  animation: float 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.7));
+}
+
+.coral-avatar__eyes {
+  transform-origin: center;
+  animation: blink 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coral-avatar,
+  .coral-orb__sphere,
+  .coral-orb__glow-outer,
+  .coral-orb__glow-mid,
+  .coral-orb__core,
+  .coral-avatar__eyes {
+    animation: none;
+  }
+}

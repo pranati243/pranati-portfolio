@@ -1,0 +1,178 @@
+/* =========================================================================
+   Design tokens — single source of truth.
+   (Consolidates the old variables.css + ocean-theme.css, which overlapped.)
+   ========================================================================= */
+
+:root {
+  /* ---- Ocean palette --------------------------------------------------- */
+  --ocean-abyss: #04121f;
+  --ocean-deep-navy: #0a2540;
+  --ocean-mid: #0e3a5c;
+  --ocean-seabed: #0a4f5c;
+  --ocean-shallow: #1a5f7a;
+
+  --ocean-primary-blue: #3b82f6;
+  --ocean-light-blue: #60a5fa;
+  --ocean-accent-cyan: #38bdf8;
+  --ocean-teal: #14b8a6;
+  --ocean-teal-light: #5eead4;
+  --ocean-coral: #ff6b9d;
+  --ocean-coral-warm: #ffa07a;
+
+  /* ---- Text (all AA-contrast on the deep ocean background) ------------- */
+  --text-primary: #f0faff;
+  --text-secondary: #b8e6ff;
+  --text-muted: #8bc5e5;
+  --text-on-accent: #04121f;
+
+  /* ---- Glassmorphism containers ---------------------------------------- */
+  --glass-bg: rgba(10, 37, 64, 0.55);
+  --glass-bg-strong: rgba(10, 37, 64, 0.75);
+  --glass-bg-soft: rgba(26, 58, 92, 0.42);
+  --glass-bg-hover: rgba(16, 52, 86, 0.72);
+  --glass-border: rgba(56, 189, 248, 0.18);
+  --glass-border-hover: rgba(56, 189, 248, 0.42);
+  --glass-border-active: rgba(56, 189, 248, 0.6);
+  --glass-highlight: rgba(255, 255, 255, 0.07);
+
+  /* Blur strength is swapped per performance tier further down. */
+  --glass-blur: 18px;
+  --glass-blur-light: 12px;
+  --glass-blur-heavy: 26px;
+
+  /* ---- Glow / shadow ---------------------------------------------------- */
+  --glow: rgba(56, 189, 248, 0.6);
+  --glow-soft: rgba(56, 189, 248, 0.28);
+  --glow-intense: rgba(56, 189, 248, 0.85);
+
+  --shadow-sm: 0 2px 8px rgba(2, 12, 24, 0.32);
+  --shadow-md: 0 6px 20px rgba(2, 12, 24, 0.4);
+  --shadow-lg: 0 16px 44px rgba(2, 12, 24, 0.5);
+  --shadow-glow: 0 0 24px rgba(56, 189, 248, 0.25);
+  --shadow-glow-hover: 0 0 38px rgba(56, 189, 248, 0.45);
+
+  /* ---- Gradients -------------------------------------------------------- */
+  --gradient-depth: linear-gradient(
+    180deg,
+    #0f4c75 0%,
+    #0a3557 22%,
+    var(--ocean-deep-navy) 55%,
+    #06192c 80%,
+    var(--ocean-abyss) 100%
+  );
+  --gradient-accent: linear-gradient(135deg, var(--ocean-primary-blue), var(--ocean-accent-cyan));
+  --gradient-accent-hover: linear-gradient(135deg, var(--ocean-accent-cyan), var(--ocean-teal-light));
+  --gradient-text: linear-gradient(
+    90deg,
+    var(--ocean-accent-cyan),
+    var(--ocean-teal-light),
+    var(--ocean-light-blue),
+    var(--ocean-accent-cyan)
+  );
+  --gradient-tech-pill: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.22),
+    rgba(56, 189, 248, 0.22)
+  );
+  --gradient-divider: linear-gradient(
+    90deg,
+    transparent,
+    rgba(56, 189, 248, 0.45),
+    transparent
+  );
+
+  /* ---- Typography ------------------------------------------------------- */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-heading: 'Manrope', var(--font-primary);
+  --font-ocean: 'Orbitron', 'Manrope', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* ---- Spacing ---------------------------------------------------------- */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  --max-width: 1200px;
+  --nav-height: 68px;
+
+  /* ---- Radius ----------------------------------------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* ---- Motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms var(--ease-soft);
+  --transition-base: 220ms var(--ease-soft);
+  --transition-slow: 380ms var(--ease-out);
+
+  /* ---- Z-index contract (do not reshuffle) ------------------------------ */
+  --z-background: 0;
+  --z-content: 10;
+  --z-agent: 50;
+  --z-header: 100;
+  --z-panel: 900;
+  --z-modal: 1000;
+}
+
+/* Performance tiers set by utils/performanceUtils.js on <html>.
+   Lower tiers trade blur (the most expensive paint) for frame rate. */
+:root[data-performance='medium'] {
+  --glass-blur: 12px;
+  --glass-blur-light: 8px;
+  --glass-blur-heavy: 16px;
+}
+
+:root[data-performance='low'] {
+  --glass-blur: 6px;
+  --glass-blur-light: 4px;
+  --glass-blur-heavy: 8px;
+  --glass-bg: rgba(10, 37, 64, 0.82);
+  --glass-bg-soft: rgba(26, 58, 92, 0.72);
+}
+
+/* Calm mode: 3D scene off, animations minimal, contrast up a touch. */
+:root[data-calm='true'] {
+  --glass-bg: rgba(10, 37, 64, 0.78);
+  --glass-bg-soft: rgba(26, 58, 92, 0.66);
+}
+
+/* Browsers without backdrop-filter get near-opaque panels instead of
+   unreadable transparent ones. */
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  :root {
+    --glass-bg: rgba(10, 37, 64, 0.94);
+    --glass-bg-strong: rgba(8, 30, 54, 0.96);
+    --glass-bg-soft: rgba(20, 48, 78, 0.92);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --text-secondary: #eaf8ff;
+    --text-muted: #cfeaff;
+    --glass-border: rgba(56, 189, 248, 0.5);
+    --glass-bg: rgba(6, 24, 44, 0.92);
+  }
+}

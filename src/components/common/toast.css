@@ -1,0 +1,69 @@
+/* Two classes so this wins over `.glass { position: relative }` regardless of
+   which stylesheet the bundler emits first. */
+.toast.glass {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--space-lg));
+  transform: translateX(-50%);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: min(440px, calc(100vw - 2 * var(--space-md)));
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  animation: slideUpSheet 380ms var(--ease-out);
+}
+
+.toast__icon {
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+.toast__message {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.toast__close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.toast__close:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.18);
+}
+
+/* On desktop the toast would sit on top of Coral's orb — nudge it clear. */
+@media (min-width: 768px) {
+  .toast {
+    left: var(--space-xl);
+    transform: none;
+    bottom: var(--space-xl);
+  }
+}
+
+.tooltip {
+  position: fixed;
+  z-index: var(--z-modal);
+  padding: var(--space-sm) var(--space-md);
+  max-width: 280px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+  backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  pointer-events: none;
+  animation: scaleIn 200ms var(--ease-out);
+}

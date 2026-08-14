@@ -1,0 +1,200 @@
+.hero {
+  position: relative;
+  z-index: var(--z-content);
+  min-height: 100dvh;
+  display: grid;
+  align-items: center;
+  padding-top: calc(var(--nav-height) + var(--space-2xl));
+  padding-bottom: var(--space-3xl);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  max-width: 940px;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px 7px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+}
+
+.hero__badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ocean-teal-light);
+  box-shadow: 0 0 10px var(--ocean-teal-light);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.hero__greeting {
+  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.hero__hi {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.hero__name {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  background: var(--gradient-text);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero__name.is-hovered {
+  animation: textShimmer 2s linear infinite;
+}
+
+/* Underline grows and brightens on hover — transform only. */
+.hero__name::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.08em;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--gradient-accent);
+  transform: scaleX(0.35);
+  transform-origin: left;
+  opacity: 0.55;
+  transition: transform var(--transition-slow), opacity var(--transition-slow);
+}
+
+.hero__name.is-hovered::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.hero__role {
+  font-family: var(--font-ocean);
+  font-size: clamp(1.05rem, 3vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--ocean-accent-cyan);
+  text-shadow: 0 0 24px rgba(56, 189, 248, 0.4);
+}
+
+.hero__intro {
+  max-width: 60ch;
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.hero__coral-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #d8f6ff, var(--ocean-accent-cyan) 55%, #2563eb);
+  box-shadow: 0 0 12px var(--glow);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+/* ---- Stat strip ----------------------------------------------------------- */
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+  width: 100%;
+  margin-top: var(--space-lg);
+}
+
+.hero__stat {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hero__stat-value {
+  font-family: var(--font-ocean);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hero__stat-label {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- Scroll hint ---------------------------------------------------------- */
+
+.hero__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero__hint-mouse {
+  position: relative;
+  width: 22px;
+  height: 34px;
+  border: 2px solid currentColor;
+  border-radius: var(--radius-full);
+  opacity: 0.7;
+}
+
+.hero__hint-wheel {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 3px;
+  height: 7px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--ocean-accent-cyan);
+  animation: scrollHint 1.9s var(--ease-out) infinite;
+}
+
+@media (min-width: 640px) {
+  .hero__stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__ctas {
+    width: 100%;
+  }
+
+  .hero__ctas .btn {
+    flex: 1 1 100%;
+  }
+}

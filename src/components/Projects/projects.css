@@ -1,0 +1,181 @@
+.projects__grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .projects__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.projects__item {
+  display: flex;
+}
+
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-lg);
+  background: var(--glass-bg-soft);
+  overflow: hidden;
+}
+
+/* Diagonal light sweep on hover — the "wet glass" moment. */
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(190, 240, 255, 0.14) 46%,
+    transparent 62%
+  );
+  background-size: 240% 100%;
+  background-position: -140% 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.project-card:hover::after {
+  opacity: 1;
+  animation: shimmerSweep 1.5s var(--ease-out);
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow-lg), 0 0 34px rgba(56, 189, 248, 0.28),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+.project-card__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.project-card__index {
+  font-family: var(--font-ocean);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--ocean-accent-cyan);
+  opacity: 0.75;
+}
+
+.project-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ocean-teal-light);
+  background: rgba(20, 184, 166, 0.14);
+  border: 1px solid rgba(94, 234, 212, 0.32);
+}
+
+.project-card__status--award {
+  color: #ffd79a;
+  background: rgba(255, 176, 92, 0.14);
+  border-color: rgba(255, 199, 138, 0.38);
+}
+
+.project-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.project-card__description {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  flex: 1;
+}
+
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-xs);
+}
+
+.project-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--glass-border);
+}
+
+.project-card__ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  border: 1px dashed rgba(56, 189, 248, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.project-card__ask:hover {
+  color: var(--text-primary);
+  border-style: solid;
+  border-color: var(--glass-border-hover);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.project-card__ask-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #d8f6ff, var(--ocean-accent-cyan) 60%, #2563eb);
+  box-shadow: 0 0 8px var(--glow-soft);
+}
+
+/* ---- Modal contents -------------------------------------------------------- */
+
+.projects__modal-heading {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-ocean);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ocean-accent-cyan);
+}
+
+.projects__modal-heading:first-child {
+  margin-top: 0;
+}
+
+.projects__modal-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--glass-border);
+}
