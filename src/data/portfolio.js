@@ -12,8 +12,26 @@ export { projects, skills, about, resume };
  * and by api/ask.js at build time on Vercel, so the serverless function needs
  * no database — the data ships inside the function.
  */
+/**
+ * What THIS site (not Pranati's other projects) is built with. Visitors who
+ * like the underwater scene or the chatbot often ask "what did you use for
+ * this?" — Coral had no answer for that until this existed, since her
+ * context was previously only Pranati's career projects.
+ */
+export const siteMeta = {
+  description:
+    "This portfolio itself — the ocean scene, glassmorphism and me (Coral)",
+  frontend: ['React 19', 'Vite', 'plain CSS with custom properties (no UI framework)'],
+  threeD: ['Three.js', 'React Three Fiber — the underwater scene and my own 3D character'],
+  ai: ['Google Gemini (gemini-2.5-flash)'],
+  hosting:
+    'A single Vercel project: the static site plus one serverless function for my chat, so there is no separate backend or database.',
+  sourceCode: 'https://github.com/pranati243/pranati-portfolio',
+};
+
 export function getPortfolioContext() {
   return {
+    siteMeta,
     owner: {
       name: about.name,
       role: about.role,

@@ -2,6 +2,7 @@ import { projects } from '../data/projects.js';
 import { skills, skillCategories } from '../data/skills.js';
 import { about } from '../data/about.js';
 import { resume } from '../data/resume.js';
+import { siteMeta } from '../data/portfolio.js';
 
 /**
  * Coral's offline brain.
@@ -33,6 +34,16 @@ const RULES = [
   {
     test: /(whose portfolio|who owns|who made this|who built this|who created)/i,
     reply: () => `This is ${about.name}'s portfolio — Pranati built the whole thing herself!`,
+  },
+  {
+    // Distinct from "who built this" above — this is about the tech stack of
+    // the SITE itself, not who owns it or Pranati's career projects. The
+    // "use"/"build" branch requires the object to be "this"/"it" specifically
+    // — without that guard, "what did she use for LabLink" was being stolen
+    // from the LabLink-specific rule below.
+    test: /(what did (she|you|pranati) (use|build) (for )?(this|it)\b|what('s| is) (your|this (site|portfolio)'?s|the) tech stack|tech stack.*(this (site|portfolio)|of this)|how (was|is) (this (site|portfolio)|it) built|how were you (built|made)|what (framework|library|libraries) (did|does) (she|this|you)|source code|is this open.?source|github repo)/i,
+    reply: () =>
+      `This site's built with ${siteMeta.frontend[0]} and ${siteMeta.threeD[0]} for the ocean scene — and I run on ${siteMeta.ai[0]}, all deployed as one Vercel project.`,
   },
   {
     test: /(who are you|what are you|your name|are you (an? )?(ai|bot|real))/i,
